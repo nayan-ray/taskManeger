@@ -115,5 +115,22 @@ const getTaskHandler = async (req, res) => {
     }
 }
 
+//get summary of tasks
+const getSummaryHandler = async (req, res) => {
+    try {
+        const userEmail = req.userEmail;
 
-module.exports = { createTaskHandler, updateTaskHandler , deleteTaskHandler, getTaskHandler };
+        // Aggregate tasks by status
+        const summary = await Task.aggregate([
+            { $match: { userEmail } },
+            { $group: { _id: "$status", total: { $sum: 1 } } }
+        ]);
+
+        res.status(200).json({ message: 'success', summary });
+    } catch (error) {
+        res.status(500).json({ message: 'fail', data: error.message });
+    }
+}
+
+
+module.exports = { createTaskHandler, updateTaskHandler , deleteTaskHandler, getTaskHandler, getSummaryHandler };
