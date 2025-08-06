@@ -8,6 +8,7 @@ const connectDb = require('./config/db');
 const userRouter = require('./Routers/userRoute');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const taskRouter = require('./Routers/taskRoute');
 
 
 
@@ -29,5 +30,6 @@ connectDb()
 
 //importing routes
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/tasks', taskRouter);
 
 module.exports = app;
